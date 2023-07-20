@@ -1,4 +1,4 @@
-
+#Schema
 CREATE TABLE cars (
 car_id INT PRIMARY KEY,
 make VARCHAR(50),
@@ -61,20 +61,20 @@ VALUES (1, 1, 1, '2021-01-01'),
 (19, 7, 1, '2023-02-10'),
 (20, 4, 4, '2023-03-01');
 
- 
+#Query SQL
 SELECT * FROM cars;
 SELECT * FROM salespersons;
 SELECT * FROM sales;
 
 #1. What are the details of all cars purchased in the year 2022?
-SELECT cars.car_id,cars.make,cars.type,cars.style,cars.cost_$,Year(sales.purchase_date) AS Purchase_year 
+SELECT cars.car_id,cars.make,cars.type,cars.style,cars.cost_$,Year(sales.purchase_date) AS Purchase_Year 
 FROM cars
 INNER JOIN sales
 ON cars.car_id = sales.car_id
 WHERE YEAR(purchase_date) = '2022';
 
 #2. What is the total number of cars sold by each salesperson?
-SELECT salespersons.name AS Salesman, COUNT(sales.salesman_id) AS total_cars_sold
+SELECT salespersons.name AS Salesman, COUNT(sales.salesman_id) AS Total_Cars_Sold
 FROM salespersons
 INNER JOIN sales ON salespersons.salesman_id = sales.salesman_id
 GROUP BY salespersons.name 
@@ -121,17 +121,17 @@ INNER JOIN sales ON cars.car_id = sales.car_id
 WHERE cars.style = 'SUV' AND YEAR(sales.purchase_date) = '2022';
 
 #9. What is the name and city of the salesperson who sold the most number of cars in the year 2023?
-select salespersons.name, salespersons.city, year(sales.purchase_date) as Purchase_year, count(cars.car_id) as No_cars
+select salespersons.name, salespersons.city, year(sales.purchase_date) as Purchase_Year, count(cars.car_id) as Number_Cars
 from salespersons
 inner join sales on salespersons.salesman_id = sales.salesman_id
 inner join cars on sales.car_id = cars.car_id
 where year(sales.purchase_date) = '2023'
-group by salespersons.name, salespersons.city, Purchase_year
-order by No_cars desc
+group by salespersons.name, salespersons.city, Purchase_Year
+order by Number_Cars desc
 limit 1;
 
-#10.What is the name and age of the salesperson who generated the highest revenue in the year 2022?
-SELECT salespersons.name,salespersons.age,YEAR(sales.purchase_date) AS Purchase_year, SUM(cars.cost_$) AS Revenue
+#10. What is the name and age of the salesperson who generated the highest revenue in the year 2022
+SELECT salespersons.name,salespersons.age,YEAR(sales.purchase_date) AS Purchase_Year, SUM(cars.cost_$) AS Revenue
 FROM salespersons
 INNER JOIN sales ON salespersons.salesman_id = sales.salesman_id
 INNER JOIN cars ON sales.car_id = cars.car_id
@@ -139,4 +139,3 @@ WHERE YEAR(sales.purchase_date) = '2022'
 GROUP BY salespersons.name,salespersons.age
 ORDER BY Revenue DESC
 LIMIT 1;
-
